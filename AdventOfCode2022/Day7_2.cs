@@ -153,7 +153,7 @@
                 indent += "  ";
             }
 
-            Console.WriteLine(Value);
+            Console.WriteLine(Children.Any() ? Value + " (dir)" : Value);
 
             for (var i = 0; i < Children.Count; i++)
             {

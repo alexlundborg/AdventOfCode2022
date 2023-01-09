@@ -11,6 +11,7 @@
         
         // uncomment to view folder structure
         // node.PrintPretty("", true);
+        
         var totalSum = directorySizes.Where(dir => dir.Value <= 100000).Sum(dir => dir.Value);
         Console.WriteLine("Total sum: " + totalSum);
     }
@@ -143,7 +144,7 @@
                 indent += "  ";
             }
 
-            Console.WriteLine(Value);
+            Console.WriteLine(Children.Any() ? Value + " (dir)" : Value);
 
             for (var i = 0; i < Children.Count; i++)
             {
