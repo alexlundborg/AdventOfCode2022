@@ -14,11 +14,11 @@
         
         fileStructure.Root.PrintPretty("", true);
 
-        var requiredSpace = directorySizes[node.Children[0].Path] + SpaceRequiredForUpdate - AvailableDiskSpace;
+        var spaceRequiredToFreeUp = directorySizes[node.Children[0].Path] + SpaceRequiredForUpdate - AvailableDiskSpace;
         
         var result = directorySizes
             .Select(dir => dir.Value)
-            .Where(value => value > requiredSpace)
+            .Where(value => value > spaceRequiredToFreeUp)
             .Min();
         
         Console.WriteLine("Delete the directory with this size: " + result);
