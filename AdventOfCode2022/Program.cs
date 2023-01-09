@@ -1,1 +1,1 @@
-﻿// Day1.Solution();
+﻿Day1.Solution();

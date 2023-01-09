@@ -1,4 +1,4 @@
-﻿class Day1
+﻿class Day1_2
 {
     public static void  Solution()
     {
@@ -23,8 +23,14 @@
             }
         }
 
-        var maxCalories = calorieList.Max();
+        var byDescending = calorieList.OrderByDescending(c => c).ToArray();
 
-        Console.WriteLine(maxCalories);
+        var maxSum = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            maxSum += byDescending[i];
+        }
+
+        Console.WriteLine(maxSum);
     }
 }

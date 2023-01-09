@@ -1,6 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-
-public class Day6_2
+﻿public class Day6_2
 {
     public static void Solution()
     {
