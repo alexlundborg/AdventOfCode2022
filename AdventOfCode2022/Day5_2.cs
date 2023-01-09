@@ -1,26 +1,25 @@
 ﻿public class Day5_2
 {
-    public class MyStack
+    private class CharStack
     {
-        public readonly Stack<char> _theStack = new ();
+        private readonly Stack<char> _stack = new ();
 
         public char Pop()
         {
-            return _theStack.Pop();
+            return _stack.Pop();
         }
 
         public void Push(char item)
         {
-            _theStack.Push(item);
+            _stack.Push(item);
         }
     }
-    
     public static void Solution()
     {
-        var stacks = new MyStack[9];
+        var stacks = new CharStack[9];
         for (var i = 0; i < 9; i++)
         {
-            stacks[i] = new MyStack();
+            stacks[i] = new CharStack();
         }
         
         var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input5.txt");
@@ -31,22 +30,12 @@
             {
                 if (!char.IsWhiteSpace(lines[i][j]))
                 {
-                    Console.WriteLine(lines[i][j]);
                     stacks[j / 4].Push(lines[i][j]);
                 }
             } 
         }
 
-        foreach (var stack in stacks)
-        {
-            Console.WriteLine("stack");
-
-            foreach (var item in stack._theStack)
-            {
-                Console.WriteLine("item: " + item);
-            }
-
-        }
+   
         
         for (var k = 10; k < lines.Length; k++)
         {
@@ -54,8 +43,7 @@
             var amount = int.Parse(split[1]);
             var from = int.Parse(split[3]) - 1;
             var to = int.Parse(split[5]) - 1;
-            Console.WriteLine(k);
-            var tempStack = new MyStack();
+            var tempStack = new CharStack();
             PushPop(amount, stacks[from], tempStack);
             PushPop(amount, tempStack, stacks[to]);
         }
@@ -68,7 +56,7 @@
         Console.WriteLine(result);
     }
 
-    private static void PushPop(int amount, MyStack stackTo, MyStack stacksFrom)
+    private static void PushPop(int amount, CharStack stackTo, CharStack stacksFrom)
     {
         for (var i = 0; i < amount; i++)
         {
