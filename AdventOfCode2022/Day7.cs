@@ -14,7 +14,7 @@
         Console.WriteLine("Total sum: " + totalSum);
     }
 
-    private static Node? CheckLineValue(string line, Node? node, IDictionary<string, int> directorySize)
+    private static Node? CheckLineValue(string line, Node? node, IDictionary<string, int> directorySizes)
     {
         if (line.Contains("$ ls"))
         {
@@ -35,7 +35,7 @@
         
         else if (line.Any(char.IsDigit))
         {
-            ProcessFileInfo(line, node, directorySize);
+            ProcessFileInfo(line, node, directorySizes);
         }
 
         return node;
@@ -50,7 +50,8 @@
     private static Node? MoveIntoDirectory(string line, Node? node)
     {
         if (node == null) return node;
-        var newNode = new Node(line[5..], node, node.Path + "/" + line[5..]);
+        var name = line[5..];
+        var newNode = new Node(name, node, node.Path + "/" + name);
         
         if (node.Children.All(n => n.Value != newNode.Value))
         {
@@ -65,7 +66,7 @@
         return node;
     }
 
-    private static void ProcessFileInfo(string line, Node? node, IDictionary<string, int> directorySize)
+    private static void ProcessFileInfo(string line, Node? node, IDictionary<string, int> directorySizes)
     {
         var formattingSizeAndName = line.Split(" ");
         var sizeAndName = formattingSizeAndName[0];
@@ -73,24 +74,30 @@
 
         if (node?.Path != null)
         {
-            directorySize.TryGetValue(node.Path, out var prevSize);
-            var childNode = new Node(formattingSizeAndName[1] + $" (file, size={size})", node,
-                node.Path + "/" + formattingSizeAndName[1] + $" (file, size={size})");
-            node.Children.Add(childNode);
-            directorySize[node.Path] = prevSize + size;
+            directorySizes.TryGetValue(node.Path, out var prevSize);
+            directorySizes[node.Path] = prevSize + size;
+            AddChild(node, formattingSizeAndName, size);
         }
 
-        if (node?.Parent != null) AddSizeToParent(node.Parent, size, directorySize);
+        if (node?.Parent != null) AddSizeToParent(node.Parent, size, directorySizes);
     }
 
-    private static void AddSizeToParent(Node node, int size, IDictionary<string, int> directorySize)
+    private static void AddChild(Node node, IReadOnlyList<string> formattingSizeAndName, int size)
     {
-        directorySize.TryGetValue(node.Path, out var prevParentSize);
-        directorySize[node.Path] = prevParentSize + size;
+        var name = formattingSizeAndName[1] + $" (file, size={size})";
+        var childNode = new Node(name, node,
+            node.Path + "/" + name);
+        node.Children.Add(childNode);
+    }
+
+    private static void AddSizeToParent(Node node, int size, IDictionary<string, int> directorySizes)
+    {
+        directorySizes.TryGetValue(node.Path, out var prevParentSize);
+        directorySizes[node.Path] = prevParentSize + size;
 
         if (node.Parent is not null)
         {
-            AddSizeToParent(node.Parent, size, directorySize);
+            AddSizeToParent(node.Parent, size, directorySizes);
         }
     }
 
@@ -110,16 +117,16 @@
     {
         public Node(string value, Node? parent, string path)
         {
-            Parent = parent;
             Value = value;
+            Parent = parent;
             Path = path;
             Children = new List<Node>();
         }
 
         public readonly string Value;
+        public readonly Node? Parent;
         public readonly string Path;
         public List<Node> Children;
-        public readonly Node? Parent;
 
         public void PrintPretty(string indent, bool last)
         {
