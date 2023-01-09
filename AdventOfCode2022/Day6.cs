@@ -5,10 +5,10 @@
         var buffer = File.ReadAllText(path);
 
         var lastFourCharacters = "";
-        var marker = false;
         var index = 0;
         for (var i = 0; i < buffer.Length; i++)
         {
+            bool marker;
             if (lastFourCharacters.Length < 4)
             {
                 lastFourCharacters += buffer[i];

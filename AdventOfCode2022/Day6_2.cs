@@ -5,7 +5,6 @@
         var buffer = File.ReadAllText(path);
         var lastFourCharacters = "";
         var last14Characters = "";
-        var messageMarker = false;
         var index = 0;
         for (var i = 0; i < buffer.Length; i++)
         {
@@ -19,6 +18,7 @@
                 lastFourCharacters += buffer[i];
             }
 
+            bool messageMarker;
             if (last14Characters.Length < 14)
             {
                 last14Characters += buffer[i];

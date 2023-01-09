@@ -1,2 +1,2 @@
-﻿// change class here to run a different puzzle
-Day7.Solution(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input7.txt");
+﻿// change class to run a different puzzle
+Day1.Solution(@"<file path of puzzle input here>");

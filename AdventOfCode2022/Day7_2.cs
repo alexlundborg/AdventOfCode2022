@@ -12,7 +12,7 @@
         
         lines.Aggregate(node, (current, line) => CheckLineValue(line, current, directorySizes) ?? node);
         
-        // uncomment to see folder structure
+        // uncomment to view folder structure
         // folderStructure.Root.PrintPretty("", true);
 
         var spaceRequiredToFreeUp = directorySizes[node.Children[0].Path] + SpaceRequiredForUpdate - AvailableDiskSpace;
