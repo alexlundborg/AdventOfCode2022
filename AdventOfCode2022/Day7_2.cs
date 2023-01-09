@@ -6,14 +6,14 @@
     public static void Solution(string path)
     {
         var lines = File.ReadAllLines(path);
-        var fileStructure = new Tree();
-        var node = fileStructure.Root;
+        var folderStructure = new Tree();
+        var node = folderStructure.Root;
         var directorySizes = new Dictionary<string, int>();
         
         lines.Aggregate(node, (current, line) => CheckLineValue(line, current, directorySizes) ?? node);
         
         // uncomment to view folder structure
-        // folderStructure.Root.PrintPretty("", true);
+        // node.PrintPretty("", true);
 
         var spaceRequiredToFreeUp = directorySizes[node.Children[0].Path] + SpaceRequiredForUpdate - AvailableDiskSpace;
         
@@ -116,7 +116,7 @@
     {
         public Tree()
         {
-            Root = new Node("", null, "")
+            Root = new Node("Root", null, "")
             {
                 Children = new List<Node>()
             };

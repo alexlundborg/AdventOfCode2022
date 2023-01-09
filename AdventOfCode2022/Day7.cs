@@ -10,7 +10,7 @@
         lines.Aggregate(node, (current, line) => CheckLineValue(line, current, directorySizes) ?? node);
         
         // uncomment to view folder structure
-        // folderStructure.Root.PrintPretty("", true);
+        // node.PrintPretty("", true);
         var totalSum = directorySizes.Where(dir => dir.Value <= 100000).Sum(dir => dir.Value);
         Console.WriteLine("Total sum: " + totalSum);
     }
@@ -106,7 +106,7 @@
     {
         public Tree()
         {
-            Root = new Node("", null, "")
+            Root = new Node("Root", null, "")
             {
                 Children = new List<Node>()
             };
