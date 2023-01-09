@@ -2,7 +2,7 @@
 {
     public static void Solution()
     {
-        var lines = System.IO.File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input2.txt");
+        var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input2.txt");
 
         var sum = 0;
         foreach (var line in lines)

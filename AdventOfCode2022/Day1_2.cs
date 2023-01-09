@@ -6,7 +6,7 @@
 
         var calorieList = new List<int>();
 
-        var lines = System.IO.File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input.txt");
+        var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input.txt");
 
         var sum = 0;
         foreach (var line in lines)

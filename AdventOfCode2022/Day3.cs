@@ -2,7 +2,7 @@
 {
     public static void Solution()
     {
-        var lines = System.IO.File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input3.txt");
+        var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input3.txt");
 
         var prioritiesDict = new Dictionary<char, int>();
 
