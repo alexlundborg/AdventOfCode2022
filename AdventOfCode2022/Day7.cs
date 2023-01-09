@@ -8,46 +8,68 @@ public class Day7
         var fileStructure = new Tree();
         var node = fileStructure.Root;
         var directorySizes = new Dictionary<string, int>();
-        for (var i = 0; i < lines.Length; i++)
-        {
-            node = CheckLineValue(lines, i, node, directorySizes);
-        }
+        lines.Aggregate(node, (current, line) => CheckLineValue(line, current, directorySizes) ?? node);
 
         fileStructure.Root.PrintPretty("", true);
 
         var totalSum = directorySizes.Where(dir => dir.Value <= 100000).Sum(dir => dir.Value);
-
         Console.WriteLine("Total sum: " + totalSum);
     }
 
-    private static Node? CheckLineValue(string[] lines, int i, Node? node, Dictionary<string, int> directorySize)
+    private static Node? CheckLineValue(string line, Node? node, Dictionary<string, int> directorySize)
     {
-        if (lines[i].Contains("$ ls"))
+        if (line.Contains("$ ls"))
         {
             return node;
         }
-        
-        if (lines[i].Contains("$ cd"))
+
+        if (line.Contains("$ cd"))
         {
-            node = CheckCommand(lines, i, node);
+            node = CheckCommand(line, node);
         }
-        else if (lines[i].StartsWith("dir "))
+        
+        else if (line.StartsWith("dir "))
         {
             if (node == null) return node;
-            var newNode = new Node(lines[i].Substring(4), node, node.Path + "/" + lines[i].Substring(4));
+            var newNode = new Node(line.Substring(4), node, node.Path + "/" + line.Substring(4));
             node.Children.Add(newNode);
         }
-        else if (lines[i].Any(char.IsDigit))
+        
+        else if (line.Any(char.IsDigit))
         {
-            ProcessFileInfo(lines, i, node, directorySize);
+            ProcessFileInfo(line, node, directorySize);
+        }
+
+        return node;
+    }
+    
+    private static Node? CheckCommand(string line, Node? node)
+    {
+        node = line.Contains("$ cd ..") ? node?.Parent : MoveIntoDirectory(line, node);
+        return node;
+    }
+    
+    private static Node? MoveIntoDirectory(string line, Node? node)
+    {
+        if (node == null) return node;
+        var newNode = new Node(line.Substring(5), node, node.Path + "/" + line.Substring(5));
+        
+        if (node.Children.All(n => n.Value != newNode.Value))
+        {
+            node.Children.Add(newNode);
+            node = newNode;
+        }
+        else
+        {
+            node = node.Children.First(n => n.Value == newNode.Value);
         }
 
         return node;
     }
 
-    private static void ProcessFileInfo(string[] lines, int i, Node? node, Dictionary<string, int> directorySize)
+    private static void ProcessFileInfo(string line, Node? node, Dictionary<string, int> directorySize)
     {
-        var formattingSizeAndName = lines[i].Split(" ");
+        var formattingSizeAndName = line.Split(" ");
         var sizeAndName = formattingSizeAndName[0];
         var size = int.Parse(sizeAndName);
 
@@ -61,30 +83,6 @@ public class Day7
         }
 
         if (node?.Parent != null) AddSizeToParent(node.Parent, size, directorySize);
-    }
-
-    private static Node? CheckCommand(string[] lines, int i, Node? node)
-    {
-        node = lines[i].Contains("$ cd ..") ? node?.Parent : MoveIntoDirectory(lines, i, node);
-        return node;
-    }
-
-    private static Node? MoveIntoDirectory(string[] lines, int i, Node? node)
-    {
-        if (node == null) return node;
-        var newNode = new Node(lines[i].Substring(5), node, node.Path + "/" + lines[i].Substring(5));
-        
-        if (node.Children.All(n => n.Value != newNode.Value))
-        {
-            node.Children.Add(newNode);
-            node = newNode;
-        }
-        else
-        {
-            node = node.Children.First(n => n.Value == newNode.Value);
-        }
-
-        return node;
     }
 
     private static void AddSizeToParent(Node node, int size, Dictionary<string, int> directorySize)
