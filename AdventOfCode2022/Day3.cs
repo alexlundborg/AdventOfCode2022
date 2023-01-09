@@ -10,14 +10,12 @@
         {
             var index = (int) letter % 32;
             prioritiesDict.Add(letter, index);
-            Console.WriteLine($"letterToNumber: {letter}{index}");
         }
 
         for (char letter = 'A'; letter <= 'Z'; letter++)
         {
             var index = (int) letter % 32 + 26;
             prioritiesDict.Add(letter, index);
-            Console.WriteLine($"letterToNumber: {letter}{index}");
         }
 
         var commonItems = new List<char>();
@@ -34,7 +32,6 @@
         var prioritySum = 0;
         foreach (var item in commonItems)
         {
-            Console.WriteLine($"item: {item}");
             prioritiesDict.TryGetValue(item, out var priority);
             prioritySum += priority;
         }

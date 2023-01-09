@@ -2,8 +2,6 @@
 {
     public static void Solution(string path)
     {
-        Console.WriteLine("Hello, World!");
-
         var calorieList = new List<int>();
 
         var lines = File.ReadAllLines(path);

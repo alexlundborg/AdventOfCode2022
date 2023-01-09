@@ -3,13 +3,14 @@
     public static void Solution(string path)
     {
         var lines = File.ReadAllLines(path);
-        var fileStructure = new Tree();
-        var node = fileStructure.Root;
+        var folderStructure = new Tree();
+        var node = folderStructure.Root;
         var directorySizes = new Dictionary<string, int>();
         
         lines.Aggregate(node, (current, line) => CheckLineValue(line, current, directorySizes) ?? node);
         
-        fileStructure.Root.PrintPretty("", true);
+        // uncomment to see folder structure
+        // folderStructure.Root.PrintPretty("", true);
         var totalSum = directorySizes.Where(dir => dir.Value <= 100000).Sum(dir => dir.Value);
         Console.WriteLine("Total sum: " + totalSum);
     }
