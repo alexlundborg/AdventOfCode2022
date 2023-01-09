@@ -10,7 +10,7 @@
         lines.Aggregate(node, (current, line) => CheckLineValue(line, current, directorySizes) ?? node);
         
         // uncomment to view folder structure
-        // node.PrintPretty("", true);
+        // node.Print("", true);
         
         var totalSum = directorySizes.Where(dir => dir.Value <= 100000).Sum(dir => dir.Value);
         Console.WriteLine("Total sum: " + totalSum);
@@ -130,25 +130,28 @@
         public readonly string Path;
         public List<Node> Children;
 
-        public void PrintPretty(string indent, bool last)
+        public void Print(string indent, bool last)
         {
-            Console.Write(indent);
-            if (last)
+            if (Value != "Root")
             {
-                Console.Write("- ");
-                indent += "  ";
-            }
-            else
-            {
-                Console.Write("- ");
-                indent += "  ";
-            }
+                Console.Write(indent);
+                if (last)
+                {
+                    Console.Write("- ");
+                    indent += "  ";
+                }
+                else
+                {
+                    Console.Write("- ");
+                    indent += "  ";
+                }
 
-            Console.WriteLine(Children.Any() ? Value + " (dir)" : Value);
-
+                Console.WriteLine(Children.Any() ? Value + " (dir)" : Value);
+            }
+            
             for (var i = 0; i < Children.Count; i++)
             {
-                Children[i].PrintPretty(indent, i == Children.Count - 1);
+                Children[i].Print(indent, i == Children.Count - 1);
             }
         }
     }
