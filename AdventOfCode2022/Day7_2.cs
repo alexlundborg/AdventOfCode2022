@@ -11,11 +11,6 @@
         
         fileStructure.Root.PrintPretty("", true);
 
-        foreach (var dir in directorySizes)
-        {
-            Console.WriteLine(dir.Key + " : " + dir.Value);
-        }
-
         var result = directorySizes
             .Select(dir => dir.Value)
             .Where(value => value > 268565)
