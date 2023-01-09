@@ -1,8 +1,8 @@
 ﻿class Day2_2
 {
-    public static void Solution()
+    public static void Solution(string path)
     {
-        var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input2.txt");
+        var lines = File.ReadAllLines(path);
 
         var sum = 0;
         foreach (var line in lines)

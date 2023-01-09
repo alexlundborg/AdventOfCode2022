@@ -1,8 +1,8 @@
 ﻿class Day3_2
 {
-    public static void Solution()
+    public static void Solution(string path)
     {
-        var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input3.txt");
+        var lines = File.ReadAllLines(path);
 
         var prioritiesDict = new Dictionary<char, int>();
 

@@ -1,8 +1,8 @@
 ﻿public class Day6_2
 {
-    public static void Solution()
+    public static void Solution(string path)
     {
-            var buffer = File.ReadAllText(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input6.txt");
+            var buffer = File.ReadAllText(path);
 
         var lastFourCharacters = "";
         var last14Characters = "";

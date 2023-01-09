@@ -1,20 +1,6 @@
 ﻿public class Day5_2
 {
-    private class CharStack
-    {
-        private readonly Stack<char> _stack = new ();
-
-        public char Pop()
-        {
-            return _stack.Pop();
-        }
-
-        public void Push(char item)
-        {
-            _stack.Push(item);
-        }
-    }
-    public static void Solution()
+    public static void Solution(string path)
     {
         var stacks = new CharStack[9];
         for (var i = 0; i < 9; i++)
@@ -22,7 +8,7 @@
             stacks[i] = new CharStack();
         }
         
-        var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input5.txt");
+        var lines = File.ReadAllLines(path);
 
         for (var i = 7; i >= 0; i--)
         {
@@ -34,8 +20,6 @@
                 }
             } 
         }
-
-   
         
         for (var k = 10; k < lines.Length; k++)
         {
@@ -61,6 +45,21 @@
         for (var i = 0; i < amount; i++)
         {
             stacksFrom.Push(stackTo.Pop());
+        }
+    }
+    
+    private class CharStack
+    {
+        private readonly Stack<char> _stack = new ();
+
+        public char Pop()
+        {
+            return _stack.Pop();
+        }
+
+        public void Push(char item)
+        {
+            _stack.Push(item);
         }
     }
 }

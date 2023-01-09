@@ -3,9 +3,9 @@
     private const int AvailableDiskSpace = 70000000;   
     private const int SpaceRequiredForUpdate = 30000000;
 
-    public static void Solution()
+    public static void Solution(string path)
     {
-        var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input7.txt");
+        var lines = File.ReadAllLines(path);
         var fileStructure = new Tree();
         var node = fileStructure.Root;
         var directorySizes = new Dictionary<string, int>();
