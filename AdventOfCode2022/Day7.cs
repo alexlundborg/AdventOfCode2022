@@ -105,6 +105,8 @@
 
     private class Tree
     {
+        public readonly Node Root;
+
         public Tree()
         {
             Root = new Node("Root", null, "")
@@ -112,11 +114,15 @@
                 Children = new List<Node>()
             };
         }
-        public readonly Node Root;
     }
 
     private class Node
     {
+        public readonly string Value;
+        public readonly Node? Parent;
+        public readonly string Path;
+        public List<Node> Children;
+        
         public Node(string value, Node? parent, string path)
         {
             Value = value;
@@ -124,11 +130,6 @@
             Path = path;
             Children = new List<Node>();
         }
-
-        public readonly string Value;
-        public readonly Node? Parent;
-        public readonly string Path;
-        public List<Node> Children;
 
         public void Print(string indent, bool last)
         {
