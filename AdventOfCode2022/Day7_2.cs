@@ -1,5 +1,8 @@
 ﻿public class Day7_2
 {
+    private const int AvailableDiskSpace = 70000000;   
+    private const int SpaceRequiredForUpdate = 30000000;
+
     public static void Solution()
     {
         var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input7.txt");
@@ -11,9 +14,11 @@
         
         fileStructure.Root.PrintPretty("", true);
 
+        var requiredSpace = directorySizes[node.Children[0].Path] + SpaceRequiredForUpdate - AvailableDiskSpace;
+        
         var result = directorySizes
             .Select(dir => dir.Value)
-            .Where(value => value > 268565)
+            .Where(value => value > requiredSpace)
             .Min();
         
         Console.WriteLine("Delete the directory with this size: " + result);
