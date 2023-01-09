@@ -1,7 +1,6 @@
 ﻿namespace AdventOfCode2022;
 public class Day7
 {
-    
     public static void Solution()
     {
         var lines = File.ReadAllLines(@"C:\Users\alexa\OneDrive\Dokument\adventOfCode2022\input7.txt");
