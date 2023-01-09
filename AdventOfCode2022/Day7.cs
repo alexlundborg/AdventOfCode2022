@@ -6,15 +6,15 @@
         var fileStructure = new Tree();
         var node = fileStructure.Root;
         var directorySizes = new Dictionary<string, int>();
+        
         lines.Aggregate(node, (current, line) => CheckLineValue(line, current, directorySizes) ?? node);
-
+        
         fileStructure.Root.PrintPretty("", true);
-
         var totalSum = directorySizes.Where(dir => dir.Value <= 100000).Sum(dir => dir.Value);
         Console.WriteLine("Total sum: " + totalSum);
     }
 
-    private static Node? CheckLineValue(string line, Node? node, Dictionary<string, int> directorySize)
+    private static Node? CheckLineValue(string line, Node? node, IDictionary<string, int> directorySize)
     {
         if (line.Contains("$ ls"))
         {
@@ -29,7 +29,7 @@
         else if (line.StartsWith("dir "))
         {
             if (node == null) return node;
-            var newNode = new Node(line.Substring(4), node, node.Path + "/" + line.Substring(4));
+            var newNode = new Node(line[4..], node, node.Path + "/" + line[4..]);
             node.Children.Add(newNode);
         }
         
@@ -50,7 +50,7 @@
     private static Node? MoveIntoDirectory(string line, Node? node)
     {
         if (node == null) return node;
-        var newNode = new Node(line.Substring(5), node, node.Path + "/" + line.Substring(5));
+        var newNode = new Node(line[5..], node, node.Path + "/" + line[5..]);
         
         if (node.Children.All(n => n.Value != newNode.Value))
         {
@@ -65,7 +65,7 @@
         return node;
     }
 
-    private static void ProcessFileInfo(string line, Node? node, Dictionary<string, int> directorySize)
+    private static void ProcessFileInfo(string line, Node? node, IDictionary<string, int> directorySize)
     {
         var formattingSizeAndName = line.Split(" ");
         var sizeAndName = formattingSizeAndName[0];
@@ -83,7 +83,7 @@
         if (node?.Parent != null) AddSizeToParent(node.Parent, size, directorySize);
     }
 
-    private static void AddSizeToParent(Node node, int size, Dictionary<string, int> directorySize)
+    private static void AddSizeToParent(Node node, int size, IDictionary<string, int> directorySize)
     {
         directorySize.TryGetValue(node.Path, out var prevParentSize);
         directorySize[node.Path] = prevParentSize + size;
@@ -93,51 +93,54 @@
             AddSizeToParent(node.Parent, size, directorySize);
         }
     }
-}
 
-public class Tree
-{
-    public Tree()
+    private class Tree
     {
-        Root = new Node("", null, "");
-        Root.Children = new List<Node>();
-    }
-    public readonly Node Root;
-}
-
-public class Node
-{
-    public Node(string value, Node? parent, string path)
-    {
-        Parent = parent;
-        Value = value;
-        Path = path;
-        Children = new List<Node>();
-    }
-    
-    public readonly string Value;
-    public readonly string Path;
-    public List<Node> Children;
-    public Node? Parent;
-
-    public void PrintPretty(string indent, bool last)
-    {
-        Console.Write(indent);
-        if (last)
+        public Tree()
         {
-            Console.Write("- ");
-            indent += "  ";
+            Root = new Node("", null, "")
+            {
+                Children = new List<Node>()
+            };
         }
-        else
-        {
-            Console.Write("- ");
-            indent += "  ";
-        }
-        Console.WriteLine(Value);
+        public readonly Node Root;
+    }
 
-        for (int i = 0; i < Children.Count; i++)
+    private class Node
+    {
+        public Node(string value, Node? parent, string path)
         {
-            Children[i].PrintPretty(indent, i == Children.Count - 1);
+            Parent = parent;
+            Value = value;
+            Path = path;
+            Children = new List<Node>();
+        }
+
+        public readonly string Value;
+        public readonly string Path;
+        public List<Node> Children;
+        public readonly Node? Parent;
+
+        public void PrintPretty(string indent, bool last)
+        {
+            Console.Write(indent);
+            if (last)
+            {
+                Console.Write("- ");
+                indent += "  ";
+            }
+            else
+            {
+                Console.Write("- ");
+                indent += "  ";
+            }
+
+            Console.WriteLine(Value);
+
+            for (var i = 0; i < Children.Count; i++)
+            {
+                Children[i].PrintPretty(indent, i == Children.Count - 1);
+            }
         }
     }
 }
